@@ -14,7 +14,13 @@ The UI includes a local preview fallback when Pages Functions are not running. T
 1. Create a D1 database and put its ID in `wrangler.toml`.
 2. Run `npx wrangler d1 migrations apply aura-db --local` for local data, or use `--remote` for production.
 3. Configure the Pages project with the `DB` D1 binding and `AI` Workers AI binding.
-4. Deploy with `npx wrangler pages deploy dist`.
+4. In **Cloudflare Pages > Settings > Builds & deployments**, use:
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+   - **Deploy command (only if your Pages project asks for one):** `npm run deploy`
+5. To deploy manually, run `npm run build && npm run deploy`.
+
+Do not use `npx wrangler deploy` for this project. That command deploys a Worker and expects a Worker entry point; Aura is a Pages site and must use `wrangler pages deploy`.
 
 The schema is in `migrations/0001_init.sql` and `migrations/0002_growth_features.sql`. Functions provide `GET /api/search`, `GET /api/github?username=...`, `GET /api/discover`, `POST /api/generate`, `POST /api/publish`, and `GET /profile/:username`.
 
