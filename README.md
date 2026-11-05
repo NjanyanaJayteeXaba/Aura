@@ -17,10 +17,13 @@ The UI includes a local preview fallback when Pages Functions are not running. T
 4. In **Cloudflare Pages > Settings > Builds & deployments**, use:
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
-   - **Deploy command (only if your Pages project asks for one):** `npm run deploy`
-5. To deploy manually, run `npm run build && npm run deploy`.
+   - **Root directory:** `/`
+   - **Deploy command:** **Leave empty**
+5. To deploy manually, run `npm run deploy:pages`.
 
-Do not use `npx wrangler deploy` for this project. That command deploys a Worker and expects a Worker entry point; Aura is a Pages site and must use `wrangler pages deploy`.
+Cloudflare Pages performs deployment itself after the build. Do **not** use `npx wrangler deploy`; that command deploys a Worker and expects a Worker entry point. Aura is a Pages site and must use `wrangler pages deploy`.
+
+If your Pages project specifically requires a deploy command, use `npm run deploy` instead. Add the `DB` D1 binding and `AI` Workers AI binding under **Pages → Settings → Functions → Bindings**, then apply the D1 migrations to the same database used by the Pages project.
 
 The schema is in `migrations/0001_init.sql` and `migrations/0002_growth_features.sql`. Functions provide `GET /api/search`, `GET /api/github?username=...`, `GET /api/discover`, `POST /api/generate`, `POST /api/publish`, and `GET /profile/:username`.
 
