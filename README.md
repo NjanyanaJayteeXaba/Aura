@@ -18,12 +18,12 @@ The UI includes a local preview fallback when Pages Functions are not running. T
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
    - **Root directory:** `/`
-   - **Deploy command:** **Leave empty**
+   - **Deploy command:** **Leave empty** (Pages Git deployments do this automatically)
 5. To deploy manually, run `npm run deploy:pages`.
 
 Cloudflare Pages performs deployment itself after the build. Do **not** use `npx wrangler deploy`; that command deploys a Worker and expects a Worker entry point. Aura is a Pages site and must use `wrangler pages deploy`.
 
-If your Pages project specifically requires a deploy command, use `npm run deploy` instead. Do not enter `npx wrangler deploy`.
+If your Pages project specifically requires a deploy command, use `npm run deploy` instead. Do not enter `npx wrangler deploy`. The deploy-command field is a Cloudflare dashboard setting; it is not controlled by `package.json`, `wrangler.toml`, or GitHub. If the build log still says `Executing user deploy command: npx wrangler deploy`, the old value is still saved in the Pages project. Edit it, clear it, save the project, and trigger a new deployment.
 
 ### Connect D1 and Workers AI
 
@@ -35,6 +35,16 @@ If your Pages project specifically requires a deploy command, use `npm run deplo
 6. After redeployment, open `/api/health`. It should return `{"ok":true,"checks":{"database":"ok","ai":"configured"}}`.
 
 For local development, run `npm run db:migrate:local`, then use `npm run pages:dev` instead of `npm run dev` so Pages Functions and bindings are emulated. Set the real D1 ID in `wrangler.toml` only for Wrangler-based local/manual workflows; the Pages dashboard binding is the source of truth for Git deployments.
+
+### If you want one command from a terminal
+
+Authenticate once with `npx wrangler login`, then run:
+
+```bash
+npm run deploy:pages
+```
+
+This uses `wrangler pages deploy dist --project-name aura`. It is only for terminal deployment, not for the Git-connected Pages build's deploy-command field.
 
 The schema is in `migrations/0001_init.sql` and `migrations/0002_growth_features.sql`. Functions provide `GET /api/health`, `GET /api/search`, `GET /api/github?username=...`, `GET /api/discover`, `POST /api/generate`, `POST /api/publish`, and `GET /profile/:username`.
 
