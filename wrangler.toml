@@ -1,0 +1,11 @@
+name = "aura"
+compatibility_date = "2024-11-01"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "aura-db"
+database_id = "replace-with-your-d1-database-id"
+
+[ai]
+binding = "AI"
